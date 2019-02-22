@@ -7,7 +7,7 @@
     "start": "gulp",
     "devstart": "gulp dev",
     "test": "mocha ./test --recursive --exit --timeout 15000",
-    "document": "apidoc -i ./routes/"
+    "document": "apidoc -i ./ -e \"(node_modules|public)\""
   },
   "husky": {
     "hooks": {
@@ -33,7 +33,7 @@
     "jquery": "^3.3.1",
     "mongoose": "^5.4.11",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "apidoc": "^0.17.7",
