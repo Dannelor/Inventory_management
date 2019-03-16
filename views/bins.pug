@@ -5,6 +5,6 @@ block content
   div(class="row")
     div(class="col-sm")
       div(class="selection-menu")
-        each bin in bins
-          a(href="./bin/" + bin.BinID)= bin.Name + " : " + bin.Description
+        each item in items
+          a(href="#")= item.Upc + " : " + item.Name + " : " + item.Description
 
