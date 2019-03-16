@@ -10,8 +10,8 @@ var apiRouter = require('./routes/api')
 
 var app = express()
 
-// Setup database connection
-var db = require('./db')
+// Setup API
+var api = require('./api/api')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
