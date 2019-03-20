@@ -13,19 +13,19 @@ queries = [
   `USE ` + config.database,
   `CREATE TABLE IF NOT EXISTS Bins (
       BinID INT NOT NULL AUTO_INCREMENT,
-      Name VARCHAR(32),
-      Description VARCHAR(256),
+      Name VARCHAR(32) NOT NULL,
+      Description VARCHAR(256) NOT NULL,
       PRIMARY KEY (BinID)
     )`,
   `CREATE TABLE IF NOT EXISTS Items (
-      UPC INT NOT NULL,
+      UPC BIGINT NOT NULL,
       Bin INT NOT NULL,
       Quantity INT NOT NULL,
       FOREIGN KEY (bin) REFERENCES Bins(BinID) ON DELETE CASCADE,
       PRIMARY KEY (upc, bin)
     )`,
   `CREATE TABLE IF NOT EXISTS ItemMeta (
-      UPC INT NOT NULL,
+      UPC BIGINT NOT NULL,
       Name VARCHAR(32),
       Description VARCHAR(256)
     )`,

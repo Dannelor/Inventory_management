@@ -30,7 +30,7 @@ router.get('/:binID(\\d+)', function(req, res) {
  *
  * @apiSuccess {JSON} response Response from the SQL server
  */
-router.post('/:name/:description', function(req, res) {
+router.post('/new', function(req, res) {
   api
     .newBin(req.params.name || '', req.params.description || '')
     .then(function(response) {
@@ -39,7 +39,7 @@ router.post('/:name/:description', function(req, res) {
 })
 
 /**
- * @api {patch} /api/bin Bin Items
+ * @api {post} /api/bin Bin Items
  * @apiDescription Updates a bins name and description
  * @apiName Bin
  * @apiGroup API
@@ -50,7 +50,7 @@ router.post('/:name/:description', function(req, res) {
  *
  * @apiSuccess {JSON} response Response from the SQL server
  */
-router.patch('/:binID(\\d+)/:name/:description', function(req, res) {
+router.post('/update', function(req, res) {
   api
     .newBin(req.params.name || '', req.params.description || '')
     .then(function(response) {

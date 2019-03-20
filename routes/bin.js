@@ -13,6 +13,7 @@ router.get('/:binID(\\d+)', function(req, res) {
     var items = JSON.parse(JSON.stringify(response))
     res.render('bins', {
       title: 'Bins',
+      binID: binID,
       items: items,
     })
   })

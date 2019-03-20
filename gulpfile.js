@@ -35,7 +35,7 @@ gulp.task(
   'browser-sync',
   gulp.series('js', 'sass', function(done) {
     browserSync.init(null, {
-      proxy: 'http://localhost:3000',
+      proxy: 'http://localhost:80',
       files: ['public/**/*.*'],
       port: 7000,
     })

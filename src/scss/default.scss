@@ -20,3 +20,24 @@
     color: white;
   }
 }
+
+.bin-items {
+  div {
+    background-color: rgb(228, 228, 228);
+    color: black;
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+  }
+
+  button {
+    margin-left: 10px;
+  }
+}
+
+td {
+  button {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
