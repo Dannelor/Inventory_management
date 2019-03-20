@@ -6,6 +6,8 @@ var logger = require('morgan')
 var bodyParser = require('body-parser')
 
 var indexRouter = require('./routes/index')
+var loginRouter = require('./routes/login')
+var usersRouter = require('./routes/users')
 var binScannerRouter = require('./routes/binScanner')
 var apiRouter = require('./routes/api')
 
@@ -33,6 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/binScanner', binScannerRouter)
 app.use('/api', apiRouter)
+app.use('/login', loginRouter)
+app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
