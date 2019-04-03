@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var API = require('../api/api')
 
-var binPage = require('./bin')
+var binPage = require('./bin/bin')
 
 /**
  * @api {get} / App Entry Point

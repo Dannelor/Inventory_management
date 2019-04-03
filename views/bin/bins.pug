@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  include ../navbar
+  div(class="row")
+    div(class="col-sm table-responsive")
+      table(class="table table-hover")
+        thead
+          tr
+            th(scope="col") UPC
+            th(scope="col") Name
+            th(scope="col") Qty
+        tbody
+          each item in items
+            tr(class="item-row" onclick="window.location='./" + binID + "/" + item.UPC + "/'")
+              th(scope="row")=item.UPC
+              td=item.Name
+              td=item.Quantity
+
+  div(class="row align-bottom col-sm")
+    button(class="btn-primary" onclick="window.location='./binscanner/" + binID + "/'") Add Item
+  script(src="/js/bins.min.js")
+
+

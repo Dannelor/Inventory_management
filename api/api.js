@@ -14,18 +14,20 @@ var API = {}
  */
 API.getItems = function(binID) {
   var p = new Promise(function(resolve, reject) {
-    db.query(
-      `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
+    db.then(function(result) {
+      result.query(
+        `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
                     FROM Items
                     LEFT JOIN ItemMeta
                     ON Items.UPC = ItemMeta.UPC
                     WHERE Bin = ?`,
-      [binID],
-      function(error, result) {
-        if (error) reject(error)
-        resolve(result)
-      }
-    )
+        [binID],
+        function(error, result) {
+          if (error) reject(error)
+          resolve(result)
+        }
+      )
+    })
   })
 
   return p
@@ -43,14 +45,16 @@ API.getItems = function(binID) {
  */
 API.newBin = function(name, description) {
   var p = new Promise(function(resolve, reject) {
-    db.query(
-      `INSERT INTO Bins (Name,Description) VALUES (?,?)`,
-      [name, description],
-      function(error, result) {
-        if (error) reject(error)
-        resolve(result)
-      }
-    )
+    db.then(function(result) {
+      result.query(
+        `INSERT INTO Bins (Name,Description) VALUES (?,?)`,
+        [name, description],
+        function(error, result) {
+          if (error) reject(error)
+          resolve(result)
+        }
+      )
+    })
   })
 
   return p
@@ -65,9 +69,11 @@ API.newBin = function(name, description) {
  */
 API.getBins = function() {
   var p = new Promise(function(resolve, reject) {
-    db.query(`SELECT * FROM Bins`, function(error, result) {
-      if (error) reject(error)
-      resolve(result)
+    db.then(function(result) {
+      result.query(`SELECT * FROM Bins`, function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      })
     })
   })
 
@@ -87,16 +93,18 @@ API.getBins = function() {
  */
 API.updateBinInfo = function(binID, name, description) {
   var p = new Promise(function(resolve, reject) {
-    db.query(
-      `UPDATE Bins 
+    db.then(function(result) {
+      result.query(
+        `UPDATE Bins 
                     SET Name = ?, Description = ?
                     WHERE BinID = ?`,
-      [name, description, binID],
-      function(error, result) {
-        if (error) reject(error)
-        resolve(result)
-      }
-    )
+        [name, description, binID],
+        function(error, result) {
+          if (error) reject(error)
+          resolve(result)
+        }
+      )
+    })
   })
 }
 
@@ -115,17 +123,19 @@ API.updateBinInfo = function(binID, name, description) {
  */
 API.addItem = function(UPC, binID, quantity) {
   var p = new Promise(function(resolve, reject) {
-    db.query(
-      `INSERT INTO items (UPC,Bin,Quantity) 
+    db.then(function(result) {
+      result.query(
+        `INSERT INTO items (UPC,Bin,Quantity) 
                     VALUES (?,?,?)
                     ON DUPLICATE KEY UPDATE Quantity=VALUES(Quantity)`,
-      [UPC, binID, quantity],
-      function(error, result) {
-        if (error) reject(error)
+        [UPC, binID, quantity],
+        function(error, result) {
+          if (error) reject(error)
 
-        resolve(result)
-      }
-    )
+          resolve(result)
+        }
+      )
+    })
   })
 
   return p
@@ -143,12 +153,46 @@ API.addItem = function(UPC, binID, quantity) {
  */
 API.removeItem = function(binID, UPC) {
   var p = new Promise(function(resolve, reject) {
-    db.query(`DELETE FROM Items WHERE Bin=? AND UPC=?`, [binID, UPC], function(
-      error,
-      result
-    ) {
-      if (error) reject(error)
-      resolve(result)
+    db.then(function(result) {
+      result.query(
+        `DELETE FROM Items WHERE Bin=? AND UPC=?`,
+        [binID, UPC],
+        function(error, result) {
+          if (error) reject(error)
+          resolve(result)
+        }
+      )
+    })
+  })
+
+  return p
+}
+
+/**
+ * API.getItem
+ *
+ * Get full data about an item in a bin
+ *
+ * @param Number BinID The bin items should be found within
+ * @param Number UPC The UPC of the item
+ *
+ * @returns Promise Promise that will return the result of the query
+ */
+API.getItem = function(binID, UPC) {
+  var p = new Promise(function(resolve, reject) {
+    db.then(function(result) {
+      result.query(
+        `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
+              FROM Items
+              LEFT JOIN ItemMeta
+              ON Items.UPC = ItemMeta.UPC
+              WHERE Bin = ?`,
+        [binID, UPC],
+        function(error, result) {
+          if (error) reject(error)
+          resolve(result)
+        }
+      )
     })
   })
 
@@ -168,16 +212,18 @@ API.removeItem = function(binID, UPC) {
  */
 API.getItemInfo = function(UPC) {
   var p = new Promise(function(resolve, reject) {
-    db.query(
-      `SELECT (Name,Description) 
+    db.then(function(result) {
+      result.query(
+        `SELECT (Name,Description) 
                     FROM ItemMeta
                     WHERE UPC = ?`,
-      [UPC],
-      function(error, result) {
-        if (err) reject(error)
-        resolve(result)
-      }
-    )
+        [UPC],
+        function(error, result) {
+          if (err) reject(error)
+          resolve(result)
+        }
+      )
+    })
   })
 }
 
