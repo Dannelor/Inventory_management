@@ -212,19 +212,21 @@ API.getItem = function(binID, UPC) {
  */
 API.getItemInfo = function(UPC) {
   var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `SELECT (Name,Description) 
-                    FROM ItemMeta
-                    WHERE UPC = ?`,
+    db.then(function(connection) {
+      connection.query(
+        `SELECT Name,Description
+          FROM ItemMeta
+          WHERE UPC = ?`,
         [UPC],
-        function(error, result) {
-          if (err) reject(error)
+        function(err, result) {
+          if (err) reject(err)
           resolve(result)
         }
       )
     })
   })
+
+  return p
 }
 
 /**
@@ -239,6 +241,39 @@ API.getItemInfo = function(UPC) {
  */
 API.updateItemQuantity = function(UPC, binID, quantity) {
   return API.addItem(UPC, binID, quantity)
+}
+
+/**
+ * API.newItem
+ *
+ * Adds a new item to the inventory
+ *
+ * @param Number UPC UPC Value of the item being added
+ * @param Number binID ID of the bin that the item is within
+ * @param Number quantity How many of this item are located within the bin
+ * @param String name Name of the new item
+ * @param String description Description of the new item
+ *
+ * @returns Promise Promise that will return the result of the query
+ */
+API.newItem = function(UPC, binID, quantity, name, description) {
+  var p = new Promise(function(resolve, reject) {
+    db.then(function(result) {
+      result.query(
+        `START TRANSACTION;
+         INSERT INTO ItemMeta VALUES (?,?,?);
+         INSERT INTO Items VALUES (?,?,?);
+         COMMIT;
+        `,
+        [UPC, name, description, UPC, binID, quantity],
+        function(error, result) {
+          if (err) reject(error)
+          resolve(result)
+        }
+      )
+    })
+  })
+  return p
 }
 
 module.exports = API
