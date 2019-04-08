@@ -1,3 +1,19 @@
 extends ../layout
 
 block content
+  div(class="row")
+    div(class="col-sm-2")
+        form(action="/bin/additem/new" method="post")
+            input(type="hidden" name="itemUPC" value=UPC)
+            input(type="hidden" name="itemBin" value=binID)
+            div(class="form-group")
+                label(for="itemName") Item Name
+                input(type="text" class="form-control" name="itemName")
+            div(class="form-group")
+                label(for="itemDescription") Item Description
+                input(type="text" class="form-control" name="itemDescription")
+            div(class="form-group")
+                label(for="itemQuantity") Item Quantity
+                input(type="number" class="form-control" name="itemQuantity" value=1)
+            div(class="text-center")
+                button(type="submit" class="btn btn-primary") Confirm

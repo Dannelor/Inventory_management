@@ -1,14 +1,19 @@
 extends ../layout
 
 block content
+    include ../navbar
     script(src="/js/quagga.min.js")
-    div(id="scannerStream")
+    div(class="row")
+        div(id="scannerStream")
     script.
         Quagga.init({
             inputStream : {
                 name : "Live",
                 type : "LiveStream",
-                target: document.querySelector('#scannerStream')    // Or '#yourElement' (optional)
+                width: 100,
+                height: 100,
+                deviceId: "0",
+                target: document.querySelector('#scannerStream')
             },
             decoder : {
                 readers : ["upc_reader"]

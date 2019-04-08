@@ -125,7 +125,7 @@ API.addItem = function(UPC, binID, quantity) {
   var p = new Promise(function(resolve, reject) {
     db.then(function(result) {
       result.query(
-        `INSERT INTO items (UPC,Bin,Quantity) 
+        `INSERT INTO Items (UPC,Bin,Quantity) 
                     VALUES (?,?,?)
                     ON DUPLICATE KEY UPDATE Quantity=VALUES(Quantity)`,
         [UPC, binID, quantity],
@@ -186,7 +186,34 @@ API.getItem = function(binID, UPC) {
               FROM Items
               LEFT JOIN ItemMeta
               ON Items.UPC = ItemMeta.UPC
-              WHERE Bin = ?`,
+              WHERE Bin = ? AND Items.UPC = ?`,
+        [binID, UPC],
+        function(error, result) {
+          if (error) reject(error)
+          resolve(result)
+        }
+      )
+    })
+  })
+
+  return p
+}
+
+/**
+ * API.getItemCount
+ *
+ * Get the quantity of a current item in a bin
+ *
+ * @param Number BinID The bin items should be found within
+ * @param Number UPC The UPC of the item
+ *
+ * @returns Promise Promise that will return the result of the query
+ */
+API.getItemCount = function(binID, UPC) {
+  var p = new Promise(function(resolve, reject) {
+    db.then(function(result) {
+      result.query(
+        `SELECT Quantity FROM Items WHERE Bin = ? AND UPC = ?`,
         [binID, UPC],
         function(error, result) {
           if (error) reject(error)
@@ -260,15 +287,13 @@ API.newItem = function(UPC, binID, quantity, name, description) {
   var p = new Promise(function(resolve, reject) {
     db.then(function(result) {
       result.query(
-        `START TRANSACTION;
-         INSERT INTO ItemMeta VALUES (?,?,?);
-         INSERT INTO Items VALUES (?,?,?);
-         COMMIT;
-        `,
-        [UPC, name, description, UPC, binID, quantity],
+        `INSERT INTO ItemMeta VALUES (?,?,?) ON DUPLICATE KEY UPDATE Name= VALUES(Name), Description=(Description);`,
+        [UPC, name, description],
         function(error, result) {
-          if (err) reject(error)
-          resolve(result)
+          if (error) reject(error)
+          API.addItem(UPC, binID, quantity).then(function(result) {
+            resolve(result)
+          })
         }
       )
     })

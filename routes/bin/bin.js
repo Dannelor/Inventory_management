@@ -30,12 +30,12 @@ router.get('/:binID(\\d+)/:UPC(\\d+)', function(req, res) {
   var UPC = req.params.UPC
 
   api.getItem(binID, UPC).then(function(response) {
-    console.log(response)
     var item = JSON.parse(JSON.stringify(response))
+    console.log(item[0])
     res.render('bin/item', {
       title: 'Item',
       binID: binID,
-      item: item,
+      item: item[0],
     })
   })
 })

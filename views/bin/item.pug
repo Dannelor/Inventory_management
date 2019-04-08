@@ -2,8 +2,22 @@ extends ../layout
 
 block content
   include ../navbar
-  div
-    h3=item.Name
-    h3=item.UPC
-    h3=item.Description
-    h3=item.Quantity
+  div(class="list-group")
+    div(class="list-group-item flex-column aligh-items-start")
+      h5(class="mb-1") Name
+      if item.Name
+        small=item.Name
+      else
+        small="NOT SET"
+    div(class="list-group-item flex-column aligh-items-start")
+      h5(class="mb-1") Description
+      if item.Description
+        small=item.Description
+      else
+        small="NOT SET"
+    div(class="list-group-item flex-column aligh-items-start")
+      h5(class="mb-1") UPC
+      small=item.UPC
+    div(class="list-group-item flex-column aligh-items-start")
+      h5(class="mb-1") Quantity
+      small=item.Quantity
