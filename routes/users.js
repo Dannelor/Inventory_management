@@ -85,7 +85,7 @@ router.post('/register', function(req, res, next) {
           res.send({
             code: 200,
             success: 'user registered sucessfully',
-            Name: username,
+            Name: name,
           })
         }
       })
