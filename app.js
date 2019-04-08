@@ -8,6 +8,7 @@ var db = require('./api/db')
 
 var indexRouter = require('./routes/index')
 var loginRouter = require('./routes/login')
+var registerRouter = require('./routes/register')
 var usersRouter = require('./routes/users')
 var apiRouter = require('./routes/api')
 
@@ -36,7 +37,7 @@ app.use('/', indexRouter)
 app.use('/api', apiRouter)
 app.use('/login', loginRouter)
 app.use('/users', usersRouter)
-
+app.use('/register', registerRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404))
