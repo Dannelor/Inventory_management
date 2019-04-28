@@ -1,4 +1,5 @@
 function updateQuantity(binID, UPC, quantity) {
+  // If called without quantity, prompt user for quantity
   if (quantity == null) {
     bootbox.prompt({
       title: 'Update Quantity',
@@ -10,6 +11,7 @@ function updateQuantity(binID, UPC, quantity) {
       },
     })
   } else {
+    // Notify server of quantity change
     $.ajax({
       url: '/api/item/updatequantity',
       type: 'POST',
@@ -17,7 +19,7 @@ function updateQuantity(binID, UPC, quantity) {
       data: JSON.stringify({ binID: binID, UPC: UPC, quantity: quantity }),
       contentType: 'application/json; charset=utf-8',
       success: function(response) {
-        console.log(response)
+        window.location.reload()
       },
       error: function() {
         alert(error)
@@ -27,10 +29,12 @@ function updateQuantity(binID, UPC, quantity) {
 }
 
 function removeItem(binID, UPC) {
+  // Confirm deletion of item
   bootbox.confirm('Are you sure you want to delete ' + UPC + '?', function(
     result
   ) {
     if (result != null) {
+      // Notify server of removal
       $.ajax({
         url: '/api/item/remove',
         type: 'POST',
@@ -38,7 +42,7 @@ function removeItem(binID, UPC) {
         data: JSON.stringify({ binID: binID, UPC: UPC }),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
-          console.log(response)
+          window.location = '..'
         },
         error: function() {
           alert(error)
