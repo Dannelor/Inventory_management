@@ -20,4 +20,10 @@ block content
       small=item.UPC
     div(class="list-group-item flex-column aligh-items-start")
       h5(class="mb-1") Quantity
-      small=item.Quantity
+      small(id="quantity_text")=item.Quantity
+    div(class="list-group-item flex-column aligh-items-start")
+      h5(class="mb-1") Actions
+      button(onclick="updateQuantity(" + item.Bin + "," + item.UPC + ")") Update Quantity
+      button(onclick="removeItem(" + item.Bin + "," + item.UPC + ")") Remove Item
+  
+  script(src="/js/bins.min.js")

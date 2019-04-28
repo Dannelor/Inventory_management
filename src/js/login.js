@@ -1,5 +1,4 @@
 $('#loginForm').on('submit', function(e) {
-  console.log('TEST')
   e.preventDefault()
 
   var username = $('#inputEmail').val()

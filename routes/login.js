@@ -1,7 +1,12 @@
 var express = require('express')
 var router = express.Router()
 
-/* GET home page. */
+/**
+ * @api {get} /login Home Page
+ * @apiDescription Login page for application
+ * @apiName GetLogin
+ * @apiGroup Login
+ */
 router.get('/', function(req, res, next) {
   res.render('login', { error: false })
 })

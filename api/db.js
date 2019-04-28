@@ -1,5 +1,6 @@
 var mysql = require('mysql')
 
+// Database configuration
 const config = {
   host: 'remotemysql.com',
   database: 'b6GvxAjWBd',
@@ -8,6 +9,7 @@ const config = {
   password: 'fCf6o9VPOs',
 }
 
+// Create databsae connection
 var connection = mysql.createConnection({
   host: config.host,
   user: config.username,
@@ -16,6 +18,7 @@ var connection = mysql.createConnection({
   port: config.port,
 })
 
+// Promise for connection competing successfully
 var promise = new Promise(function(resolve, reject) {
   connection.connect(function(err) {
     if (err) reject(err)
@@ -24,4 +27,5 @@ var promise = new Promise(function(resolve, reject) {
   })
 })
 
+// Export promise
 module.exports = promise
