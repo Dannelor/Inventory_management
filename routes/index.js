@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var API = require('../api/api')
+var api = require('../api/api')
 
 var binPage = require('./bin/bin')
 
@@ -10,14 +10,11 @@ var binPage = require('./bin/bin')
  * @apiName GetIndex
  * @apiGroup Index
  */
-router.get('/', function(req, res, next) {
-  API.getBins().then(function(result) {
-    var bins = JSON.parse(JSON.stringify(result))
-
-    res.render('index', {
-      title: 'Express',
-      bins: bins,
-    })
+router.get('/', async (req, res) => {
+  var bins = await api.getBins()
+  res.render('index', {
+    title: 'Express',
+    bins: bins,
   })
 })
 

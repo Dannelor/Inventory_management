@@ -9,34 +9,36 @@ var binAddItemRouter = require('./addItem')
 router.use('/binscanner', binScannerRouter)
 router.use('/additem', binAddItemRouter)
 
-router.get('/', function(req, res) {
+router.get('/', async (req, res) => {
   res.redirect('../')
 })
 
-router.get('/:binID(\\d+)', function(req, res) {
+router.get('/:binID(\\d+)', async (req, res) => {
+  // GET Paramaters
   var binID = req.params.binID
-  api.getItems(binID).then(function(response) {
-    var items = JSON.parse(JSON.stringify(response))
-    res.render('bin/bins', {
-      title: 'Bins',
-      binID: binID,
-      items: items,
-    })
+
+  // List of items within the bin
+  var items = await api.getItems(binID)
+
+  res.render('bin/bins', {
+    title: 'Bins',
+    binID: binID,
+    items: items,
   })
 })
 
-router.get('/:binID(\\d+)/:UPC(\\d+)', function(req, res) {
+router.get('/:binID(\\d+)/:UPC(\\d+)', async (req, res) => {
+  // GET Paramaters
   var binID = req.params.binID
   var UPC = req.params.UPC
 
-  api.getItem(binID, UPC).then(function(response) {
-    var item = JSON.parse(JSON.stringify(response))
-    console.log(item[0])
-    res.render('bin/item', {
-      title: 'Item',
-      binID: binID,
-      item: item[0],
-    })
+  // All item information about requested item
+  var item = (await api.getItem(binID, UPC))[0]
+
+  res.render('bin/item', {
+    title: 'Item',
+    binID: binID,
+    item: item,
   })
 })
 module.exports = router

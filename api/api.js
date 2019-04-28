@@ -12,25 +12,22 @@ var API = {}
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.getItems = function(binID) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
+API.getItems = async function(binID) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
                     FROM Items
                     LEFT JOIN ItemMeta
                     ON Items.UPC = ItemMeta.UPC
                     WHERE Bin = ?`,
-        [binID],
-        function(error, result) {
-          if (error) reject(error)
-          resolve(result)
-        }
-      )
-    })
+      [binID],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
   })
-
-  return p
 }
 
 /**
@@ -43,21 +40,18 @@ API.getItems = function(binID) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.newBin = function(name, description) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `INSERT INTO Bins (Name,Description) VALUES (?,?)`,
-        [name, description],
-        function(error, result) {
-          if (error) reject(error)
-          resolve(result)
-        }
-      )
-    })
+API.newBin = async function(name, description) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `INSERT INTO Bins (Name,Description) VALUES (?,?)`,
+      [name, description],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
   })
-
-  return p
 }
 
 /**
@@ -67,17 +61,14 @@ API.newBin = function(name, description) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.getBins = function() {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(`SELECT * FROM Bins`, function(error, result) {
-        if (error) reject(error)
-        resolve(result)
-      })
+API.getBins = async function() {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(`SELECT * FROM Bins`, function(error, result) {
+      if (error) reject(error)
+      resolve(result)
     })
   })
-
-  return p
 }
 
 /**
@@ -91,20 +82,19 @@ API.getBins = function() {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.updateBinInfo = function(binID, name, description) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `UPDATE Bins 
+API.updateBinInfo = async function(binID, name, description) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `UPDATE Bins 
                     SET Name = ?, Description = ?
                     WHERE BinID = ?`,
-        [name, description, binID],
-        function(error, result) {
-          if (error) reject(error)
-          resolve(result)
-        }
-      )
-    })
+      [name, description, binID],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
   })
 }
 
@@ -121,24 +111,21 @@ API.updateBinInfo = function(binID, name, description) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.addItem = function(UPC, binID, quantity) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `INSERT INTO Items (UPC,Bin,Quantity) 
+API.addItem = async function(UPC, binID, quantity) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `INSERT INTO Items (UPC,Bin,Quantity) 
                     VALUES (?,?,?)
                     ON DUPLICATE KEY UPDATE Quantity=VALUES(Quantity)`,
-        [UPC, binID, quantity],
-        function(error, result) {
-          if (error) reject(error)
+      [UPC, binID, quantity],
+      function(error, result) {
+        if (error) reject(error)
 
-          resolve(result)
-        }
-      )
-    })
+        resolve(result)
+      }
+    )
   })
-
-  return p
 }
 
 /**
@@ -151,21 +138,18 @@ API.addItem = function(UPC, binID, quantity) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.removeItem = function(binID, UPC) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `DELETE FROM Items WHERE Bin=? AND UPC=?`,
-        [binID, UPC],
-        function(error, result) {
-          if (error) reject(error)
-          resolve(result)
-        }
-      )
-    })
+API.removeItem = async function(binID, UPC) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `DELETE FROM Items WHERE Bin=? AND UPC=?`,
+      [binID, UPC],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
   })
-
-  return p
 }
 
 /**
@@ -178,25 +162,22 @@ API.removeItem = function(binID, UPC) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.getItem = function(binID, UPC) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
+API.getItem = async function(binID, UPC) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `SELECT Items.UPC,Items.Bin,Items.Quantity,ItemMeta.Name,ItemMeta.Description
               FROM Items
               LEFT JOIN ItemMeta
               ON Items.UPC = ItemMeta.UPC
               WHERE Bin = ? AND Items.UPC = ?`,
-        [binID, UPC],
-        function(error, result) {
-          if (error) reject(error)
-          resolve(result)
-        }
-      )
-    })
+      [binID, UPC],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
   })
-
-  return p
 }
 
 /**
@@ -209,21 +190,18 @@ API.getItem = function(binID, UPC) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.getItemCount = function(binID, UPC) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `SELECT Quantity FROM Items WHERE Bin = ? AND UPC = ?`,
-        [binID, UPC],
-        function(error, result) {
-          if (error) reject(error)
-          resolve(result)
-        }
-      )
-    })
+API.getItemCount = async function(binID, UPC) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `SELECT Quantity FROM Items WHERE Bin = ? AND UPC = ?`,
+      [binID, UPC],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
   })
-
-  return p
 }
 
 /**
@@ -237,8 +215,8 @@ API.getItemCount = function(binID, UPC) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.getItemInfo = function(UPC) {
-  var p = new Promise(function(resolve, reject) {
+API.getItemInfo = async function(UPC) {
+  return new Promise(async (resolve, reject) => {
     db.then(function(connection) {
       connection.query(
         `SELECT Name,Description
@@ -252,8 +230,6 @@ API.getItemInfo = function(UPC) {
       )
     })
   })
-
-  return p
 }
 
 /**
@@ -266,8 +242,8 @@ API.getItemInfo = function(UPC) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.updateItemQuantity = function(UPC, binID, quantity) {
-  return API.addItem(UPC, binID, quantity)
+API.updateItemQuantity = async function(UPC, binID, quantity) {
+  return await API.addItem(UPC, binID, quantity)
 }
 
 /**
@@ -283,22 +259,20 @@ API.updateItemQuantity = function(UPC, binID, quantity) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.newItem = function(UPC, binID, quantity, name, description) {
-  var p = new Promise(function(resolve, reject) {
-    db.then(function(result) {
-      result.query(
-        `INSERT INTO ItemMeta VALUES (?,?,?) ON DUPLICATE KEY UPDATE Name= VALUES(Name), Description=(Description);`,
-        [UPC, name, description],
-        function(error, result) {
-          if (error) reject(error)
-          API.addItem(UPC, binID, quantity).then(function(result) {
-            resolve(result)
-          })
-        }
-      )
-    })
+API.newItem = async function(UPC, binID, quantity, name, description) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      `INSERT INTO ItemMeta VALUES (?,?,?) ON DUPLICATE KEY UPDATE Name= VALUES(Name), Description=(Description);`,
+      [UPC, name, description],
+      function(error, result) {
+        if (error) reject(error)
+        API.addItem(UPC, binID, quantity).then(function(result) {
+          resolve(result)
+        })
+      }
+    )
   })
-  return p
 }
 
 module.exports = API

@@ -12,11 +12,8 @@ const api = require('../../api/api')
  *
  * @apiSuccess {JSON} response Response from the SQL server
  */
-router.get('/:binID(\\d+)', function(req, res) {
-  var binID = parseInt(req.params.binID)
-  api.getItems(binID).then(function(response) {
-    res.json(response)
-  })
+router.get('/:binID(\\d+)', async (req, res) => {
+  res.json(await api.getItems(req.params.binID))
 })
 
 /**
@@ -26,16 +23,12 @@ router.get('/:binID(\\d+)', function(req, res) {
  * @apiGroup API
  *
  * @apiParam {String} name Name of the new bin
- * @apiParam {String} descirption Description of the new bin
+ * @apiParam {String} description Description of the new bin
  *
  * @apiSuccess {JSON} response Response from the SQL server
  */
-router.post('/new', function(req, res) {
-  api
-    .newBin(req.params.name || '', req.params.description || '')
-    .then(function(response) {
-      res.json(response)
-    })
+router.post('/new', async (req, res) => {
+  res.json(await api.newBin(req.body.name || '', req.body.description || ''))
 })
 
 /**
@@ -46,16 +39,16 @@ router.post('/new', function(req, res) {
  *
  * @apiParam {String} binID Bin that is being updated
  * @apiParam {String} name New name of the bin
- * @apiParam {String} descirption New description of the bin
+ * @apiParam {String} description New description of the bin
  *
  * @apiSuccess {JSON} response Response from the SQL server
  */
-router.post('/update', function(req, res) {
-  api
-    .newBin(req.params.name || '', req.params.description || '')
-    .then(function(response) {
-      res.json(response)
-    })
+router.post('/update', async (req, res) => {
+  // Name and Description must be set
+  if (!(res.body.name && req.body.description)) res.status(400).send({})
+
+  // Update bin info and return result
+  res.json(await API.updateBinInfo(req.body.name, req.body.description))
 })
 
 module.exports = router
