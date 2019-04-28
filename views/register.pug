@@ -5,22 +5,27 @@ block content
     - var cl2=['col-md-6','m-auto']
     - var cl3=['card','card-body']
     - var h1cl=['text-center','mb-3']
-    - var icl=['fas','fa-sign-in-alt']
+    - var icl=['fas','fa-user-plus']
     div(class=cl1)
       div(class=cl2)
         div(class=cl3)
           h1(class=h1cl) 
-            i(class=icl) Login
-        form(class="form-signin" method="POST" action="/users/login")
+            i(class=icl) Register
+        form(class="form-signin" method="POST" action="/users/register")
+          div.form-group
+            label(for="Name")
+            input(type="text" name="fname" id="Name" class="form-control" placeholder="Name" required autofocus)
           div.form-group
             label(for="inputEmail")
             input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus)
           div.form-group
             label(for="inputPassword" class="sr-only")
             input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required)
+          div.form-group
+            label(for="inputPassword2" class="sr-only")
+            input(type="password" name="password2" id="inputPassword2" class="form-control" placeholder="Confirm Password" required)
           - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
-          button(class=buttonClass type="submit") Sign in
+          button(class=buttonClass type="submit") Register
           - var pcl=['lead','mt-4']
-          p(class=pcl) No Account
-            a(href="/register") Register
-    
+          p(class=pcl) Have an Account?
+            a(href="/login") Login
