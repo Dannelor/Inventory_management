@@ -86,7 +86,7 @@ API.updateBinInfo = async function(binID, name, description) {
   return new Promise(async (resolve, reject) => {
     const database = await db
     database.query(
-      `UPDATE Bins 
+      `UPDATE Bins
                     SET Name = ?, Description = ?
                     WHERE BinID = ?`,
       [name, description, binID],
@@ -115,7 +115,7 @@ API.addItem = async function(UPC, binID, quantity) {
   return new Promise(async (resolve, reject) => {
     const database = await db
     database.query(
-      `INSERT INTO Items (UPC,Bin,Quantity) 
+      `INSERT INTO Items (UPC,Bin,Quantity)
                     VALUES (?,?,?)
                     ON DUPLICATE KEY UPDATE Quantity=VALUES(Quantity)`,
       [UPC, binID, quantity],
@@ -308,12 +308,12 @@ API.getUserInfo = async function(email) {
  *
  * @returns Promise Promise that will return the result of the query
  */
-API.registerUser = async function(email, password, accesslevel) {
+API.registerUser = async function(email, password, accesslevel,name) {
   return new Promise(async (resolve, reject) => {
     const database = await db
     database.query(
-      'INSERT INTO Users (EMail,Password,AccessLevel) VALUES (?,?,?)',
-      [email, password, accesslevel],
+      'INSERT INTO Users (EMail,Password,AccessLevel,Name) VALUES (?,?,?,?)',
+      [email, password, accesslevel,name],
       function(error, result) {
         if (error) reject(error)
         resolve(result)

@@ -2,7 +2,23 @@ var express = require('express')
 var router = express.Router()
 var db = require('../api/db')
 var api = require('../api/api')
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
 
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource')
@@ -23,9 +39,9 @@ router.post('/login', async (req, res, next) => {
       code: 400,
       failed: 'error ocurred',
     })
-
+console.log(decrypt(userInfo.Password))
   // Password matches database
-  if (password == userInfo.Password) res.redirect('/bin')
+  if (password == decrypt(userInfo.Password)) res.redirect('/bin')
   else
     res.send({
       code: 204,
@@ -37,10 +53,10 @@ router.post('/register', function(req, res, next) {
   // POST Paramaters
   const name = req.body.fname
   const email = req.body.username
-  const password = req.body.password
-
+  const password = encrypt(req.body.password)
+  console.log(password)
   // Register User
-  const registered = api.registerUser(email, password, 2)
+  const registered = api.registerUser(email, password, 2,name)
 
   // Something went wrong
   if (!registered)
