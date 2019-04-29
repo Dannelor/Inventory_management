@@ -275,4 +275,50 @@ API.newItem = async function(UPC, binID, quantity, name, description) {
   })
 }
 
+/**
+ * API.getUserInfo
+ *
+ * Gets the login information of a user
+ *
+ * @param String Email of the user
+ *
+ * @returns Promise Promise that will return the result of the query
+ */
+API.getUserInfo = async function(email) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query('SELECT * FROM Users WHERE EMail = ?', [email], function(
+      error,
+      result
+    ) {
+      if (error) reject(error)
+      resolve(result)
+    })
+  })
+}
+
+/**
+ * API.registerUser
+ *
+ * Register a new user
+ *
+ * @param String Email of the user
+ * @param String Password of the user
+ * @param Int AccessLevel Access Level of the user
+ *
+ * @returns Promise Promise that will return the result of the query
+ */
+API.registerUser = async function(email, password, accesslevel) {
+  return new Promise(async (resolve, reject) => {
+    const database = await db
+    database.query(
+      'INSERT INTO Users (EMail,Password,AccessLevel) VALUES (?,?,?)',
+      [email, password, accesslevel],
+      function(error, result) {
+        if (error) reject(error)
+        resolve(result)
+      }
+    )
+  })
+}
 module.exports = API
