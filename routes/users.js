@@ -5,14 +5,14 @@ var api = require('../api/api')
 var crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
     password = 'd6F3Efeq';
-
+//Encryption Function
 function encrypt(text){
   var cipher = crypto.createCipher(algorithm,password)
   var crypted = cipher.update(text,'utf8','hex')
   crypted += cipher.final('hex');
   return crypted;
 }
-
+//Decryption Function
 function decrypt(text){
   var decipher = crypto.createDecipher(algorithm,password)
   var dec = decipher.update(text,'hex','utf8')
@@ -32,7 +32,7 @@ router.post('/login', async (req, res, next) => {
 
   // Get user info for given username
   const userInfo = (await api.getUserInfo(username))[0]
-
+console.log(decrypt(userInfo.Password))
   // Nothing was found for username
   if (!userInfo)
     res.send({
