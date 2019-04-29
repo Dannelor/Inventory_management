@@ -1,5 +1,5 @@
 {
-  "name": "inventory-management",
+  "name": "package.json",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -54,5 +54,19 @@
     "prettier": "1.16.4",
     "pretty-quick": "^1.10.0",
     "supertest": "^3.4.2"
-  }
+  },
+  "description": "CSE 3311 Team Project [![Build Status](https://travis-ci.org/uta-cse-3311/inventory_management.svg?branch=master)](https://travis-ci.org/uta-cse-3311/inventory_management)",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uta-cse-3311/inventory_management.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/uta-cse-3311/inventory_management/issues"
+  },
+  "homepage": "https://github.com/uta-cse-3311/inventory_management#readme"
 }

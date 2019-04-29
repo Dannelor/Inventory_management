@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  include navbar
+  div(class="row")
+    div(class="col-sm table-responsive")
+      table(class="table table-hover")
+        thead
+          tr
+            th(scope="col") Name
+            th(scope="col") Description
+        tbody
+          each bin in bins
+            tr(onclick="window.location='/bin/bin/" + bin.BinID + "'")
+              th(scope="row")=bin.Name
+              td=bin.Description

@@ -25,7 +25,7 @@ router.post('/login', async (req, res, next) => {
     })
 
   // Password matches database
-  if (password == userInfo.Password) res.redirect('/')
+  if (password == userInfo.Password) res.redirect('/bin')
   else
     res.send({
       code: 204,
@@ -50,11 +50,12 @@ router.post('/register', function(req, res, next) {
     })
 
   // Successfully registered
-  res.send({
-    code: 200,
-    success: 'user registered sucessfully',
-    Name: name,
-  })
+  res.redirect('/')
+  //res.send({
+  //  code: 200,
+  //  success: 'user registered sucessfully',
+  //  Name: name,
+  //})
 })
 
 module.exports = router

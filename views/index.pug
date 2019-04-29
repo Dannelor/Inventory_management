@@ -1,17 +1,26 @@
 extends layout
 
 block content
-  include navbar
-  div(class="row")
-    div(class="col-sm table-responsive")
-      table(class="table table-hover")
-        thead
-          tr
-            th(scope="col") Name
-            th(scope="col") Description
-        tbody
-          each bin in bins
-            tr(onclick="window.location='/bin/" + bin.BinID + "'")
-              th(scope="row")=bin.Name
-              td=bin.Description
-
+    - var cl1=['row','mt-5']
+    - var cl2=['col-md-6','m-auto']
+    - var cl3=['card','card-body']
+    - var h1cl=['text-center','mb-3']
+    - var icl=['fas','fa-sign-in-alt']
+    div(class=cl1)
+      div(class=cl2)
+        div(class=cl3)
+          h1(class=h1cl) 
+            i(class=icl) Login
+        form(class="form-signin" method="POST" action="/users/login")
+          div.form-group
+            label(for="inputEmail")
+            input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus)
+          div.form-group
+            label(for="inputPassword" class="sr-only")
+            input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required)
+          - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+          button(class=buttonClass type="submit") Sign in
+          - var pcl=['lead','mt-4']
+          p(class=pcl) No Account
+            a(href="/register") Register
+    

@@ -10,14 +10,8 @@ var binPage = require('./bin/bin')
  * @apiName GetIndex
  * @apiGroup Index
  */
-router.get('/', async (req, res) => {
-  var bins = await api.getBins()
-  res.render('index', {
-    title: 'Express',
-    bins: bins,
-  })
+router.get('/', function(req, res, next) {
+  res.render('login', { error: false })
 })
-
-router.use('/bin', binPage)
 
 module.exports = router
